@@ -2,6 +2,7 @@ import data from "./sampleData.json" assert { type: "json" };
 console.log(data);
 const formData = data.formData;
 console.log(formData);
+var newArray = [];
 
 const getJsonData = () => {
   const contentDiv = document.getElementById("formDesigner");
@@ -38,6 +39,25 @@ const getJsonData = () => {
 const handlePlusIconClick = (dataItem) => {
   // Your logic here
   console.log("Plus icon clicked for:", dataItem);
+  newArray.push(dataItem);
+  console.log(newArray);
+  createForm(dataItem);
 };
 
 getJsonData();
+
+const createForm = (dataItem) => {
+  console.log(dataItem);
+  const formContent = document.getElementById("form");
+
+  const form = document.createElement("form");
+
+  const formfield = document.createElement("input");
+  formfield.setAttribute("type", dataItem.type);
+  formfield.setAttribute("placeholder", dataItem.placeholder);
+  form.appendChild(formfield);
+
+  formContent.appendChild(form);
+};
+
+// createForm();
