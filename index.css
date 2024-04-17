@@ -1,6 +1,8 @@
 .form-content {
   border: 1px solid black;
   padding: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .outer-content {
@@ -9,4 +11,9 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.plus-icon {
+  font-weight: 800;
+  font-size: 20px;
 }
