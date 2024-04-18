@@ -44,11 +44,9 @@ const handlePlusIconClick = (dataItem) => {
   createForm();
 };
 
-getJsonData();
-
 const createForm = () => {
-  const formContainer = document.getElementById("formContainer");
   console.log(newArray);
+  const formContainer = document.getElementById("formContainer");
 
   //Create outer container for each form field
   newArray.forEach((item) => {
@@ -63,10 +61,20 @@ const createForm = () => {
     const label = document.createElement("label");
     label.textContent = item.label;
 
+    label.contentEditable = true;
+    // label.addEventListener("blur", () => {
+    //   editFields();
+    // });
+
     // Create delete icon
     const deleteIcon = document.createElement("span");
     deleteIcon.innerHTML = '<i class="fa-solid fa-trash"></i>';
     deleteIcon.classList.add("delete-icon");
+    deleteIcon.addEventListener("click", () => {
+      outerDiv.remove();
+      deleteSpecificData(item);
+    });
+    console.log(newArray);
 
     // Append label and delete icon to inner container
     innerDiv.appendChild(label);
@@ -81,6 +89,8 @@ const createForm = () => {
       formField = document.createElement(item.type);
       formField.setAttribute("id", item.id);
       formField.setAttribute("placeholder", item.placeholder);
+
+      // Make placeholder editable on click
     } else if (item.type === "select") {
       formField = document.createElement("select");
       formField.setAttribute("name", item.label.toLowerCase());
@@ -101,5 +111,15 @@ const createForm = () => {
   });
 };
 
+const editFields = () => {
+  console.log("first");
+};
+
+const saveBtn = document.getElementById("saveBtn");
+saveBtn.addEventListener("click", () => {
+  console.log("Save button clicked", newArray);
+});
+
 // Call the createForm function to generate the form
+getJsonData();
 createForm();

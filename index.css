@@ -38,6 +38,9 @@
 .inner-container {
   display: flex;
   align-items: center;
+  padding: 10px 0px;
+  justify-content: space-between;
+  width: 100%;
 }
 
 /* Style for label */
@@ -74,4 +77,15 @@ select {
   outline: none;
   width: 100%;
   border-radius: 2%;
+}
+
+.container {
+  display: flex;
+}
+
+#header {
+  background-color: #f1f1f1;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
 }
