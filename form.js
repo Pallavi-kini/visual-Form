@@ -95,11 +95,26 @@ const createForm = () => {
       formField = document.createElement("select");
       formField.setAttribute("name", item.label.toLowerCase());
 
-      // Create options for select field
       item.options.forEach((option) => {
         const optionElement = document.createElement("option");
-        optionElement.textContent = option;
+        optionElement.textContent = option; // Display option name
+
         formField.appendChild(optionElement);
+
+        const optionContainer = document.createElement("div");
+        optionContainer.classList.add("option-container");
+
+        const optionDelete = document.createElement("span");
+        optionDelete.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        optionDelete.classList.add("delete-icon");
+        optionDelete.addEventListener("click", () => {
+          deleteOption(option, item);
+        });
+
+        optionContainer.appendChild(optionDelete);
+
+        // Append delete icon next to option
+        optionElement.dataset.deleteIcon = optionDelete.outerHTML;
       });
     }
     formField.classList.add("form-field-style");
@@ -111,8 +126,15 @@ const createForm = () => {
   });
 };
 
-const editFields = () => {
-  console.log("first");
+const deleteOption = (option, item) => {
+  // Find the index of the option in the options array
+  const indexToDelete = item.options.indexOf(option);
+  if (indexToDelete !== -1) {
+    // Remove the option from the options array
+    item.options.splice(indexToDelete, 1);
+    // Re-render the form
+    createForm();
+  }
 };
 
 const saveBtn = document.getElementById("saveBtn");

@@ -89,3 +89,12 @@ select {
   display: flex;
   justify-content: space-between;
 }
+
+.option-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.option-container span {
+  margin-left: 5px; /* Adjust margin as needed */
+}
