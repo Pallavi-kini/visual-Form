@@ -3,20 +3,20 @@
     {
       "id": 1,
       "type": "input",
-      "label": "Sample Label",
-      "placeholder": "Sample placeholder"
+      "label": "Input",
+      "placeholder": "Type here"
     },
     {
       "id": 2,
       "type": "select",
-      "label": "Sample Label",
+      "label": "selection",
       "options": ["Sample Option", "Sample Option", "Sample Option"]
     },
     {
       "id": 3,
       "type": "textarea",
-      "label": "Sample Label",
-      "placeholder": "Sample Placeholder"
+      "label": "Area",
+      "placeholder": "Write"
     }
   ]
 }

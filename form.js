@@ -1,8 +1,9 @@
 import data from "./sampleData.json" assert { type: "json" };
-console.log(data);
+// console.log(data);
 const formData = data.formData;
-console.log(formData);
+// console.log(formData);
 var newArray = [];
+newArray = formData;
 
 const getJsonData = () => {
   const contentDiv = document.getElementById("formDesigner");
@@ -38,26 +39,67 @@ const getJsonData = () => {
 
 const handlePlusIconClick = (dataItem) => {
   // Your logic here
-  console.log("Plus icon clicked for:", dataItem);
+  newArray = [];
   newArray.push(dataItem);
-  console.log(newArray);
-  createForm(dataItem);
+  createForm();
 };
 
 getJsonData();
 
-const createForm = (dataItem) => {
-  console.log(dataItem);
-  const formContent = document.getElementById("form");
+const createForm = () => {
+  const formContainer = document.getElementById("formContainer");
+  console.log(newArray);
 
-  const form = document.createElement("form");
+  //Create outer container for each form field
+  newArray.forEach((item) => {
+    const outerDiv = document.createElement("div");
+    outerDiv.classList.add("form-field-container");
 
-  const formfield = document.createElement("input");
-  formfield.setAttribute("type", dataItem.type);
-  formfield.setAttribute("placeholder", dataItem.placeholder);
-  form.appendChild(formfield);
+    // Create inner container for label and delete icon
+    const innerDiv = document.createElement("div");
+    innerDiv.classList.add("inner-container");
 
-  formContent.appendChild(form);
+    // Create label element
+    const label = document.createElement("label");
+    label.textContent = item.label;
+
+    // Create delete icon
+    const deleteIcon = document.createElement("span");
+    deleteIcon.innerHTML = '<i class="fa-solid fa-trash"></i>';
+    deleteIcon.classList.add("delete-icon");
+
+    // Append label and delete icon to inner container
+    innerDiv.appendChild(label);
+    innerDiv.appendChild(deleteIcon);
+
+    // Append inner container to outer container
+    outerDiv.appendChild(innerDiv);
+
+    // Create form field element based on type
+    let formField;
+    if (item.type === "input" || item.type === "textarea") {
+      formField = document.createElement(item.type);
+      formField.setAttribute("id", item.id);
+      formField.setAttribute("placeholder", item.placeholder);
+    } else if (item.type === "select") {
+      formField = document.createElement("select");
+      formField.setAttribute("name", item.label.toLowerCase());
+
+      // Create options for select field
+      item.options.forEach((option) => {
+        const optionElement = document.createElement("option");
+        optionElement.textContent = option;
+        formField.appendChild(optionElement);
+      });
+    }
+    formField.classList.add("form-field-style");
+    // Append form field to outer container
+    outerDiv.appendChild(formField);
+
+    // Append outer container to form container
+    formContainer.appendChild(outerDiv);
+  });
 };
 
-// createForm();
+// Call the createForm function to generate the form
+createForm();

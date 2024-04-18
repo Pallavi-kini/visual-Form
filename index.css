@@ -17,3 +17,61 @@
   font-weight: 800;
   font-size: 20px;
 }
+
+.form-field {
+  border: 1px solid black;
+  padding: 10px;
+  display: flex;
+}
+
+.inner-container {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+}
+
+.form-field-container {
+  margin-bottom: 20px;
+}
+
+/* Style for inner container */
+.inner-container {
+  display: flex;
+  align-items: center;
+}
+
+/* Style for label */
+label {
+  margin-right: 10px;
+}
+
+/* Style for delete icon */
+.delete-icon {
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Style for form fields */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea,
+select {
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.visual-form {
+  background-color: rgb(241, 195, 241);
+  padding: 20px;
+}
+
+.form-field-style {
+  padding: 10px;
+  border: none;
+  outline: none;
+  width: 100%;
+  border-radius: 2%;
+}
