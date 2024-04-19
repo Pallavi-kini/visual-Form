@@ -5,57 +5,34 @@ let finalArray = [];
 newArray = formData;
 let count = 1;
 
-const getJsonData = () => {
+const createComponent = () => {
   const contentDiv = document.getElementById("formDesigner");
 
   formData.forEach((dataItem) => {
     const div = document.createElement("div");
     div.setAttribute("id", dataItem.id);
-    div.setAttribute("data-type", dataItem.type);
-    div.setAttribute("data-label", dataItem.label);
-    div.setAttribute("data-placeholder", dataItem.placeholder);
-    div.setAttribute("data-options", dataItem.options);
     div.classList.add("form-content");
 
     // Create a div for the content
-    const contentdiv = document.createElement("div");
-    contentdiv.textContent = dataItem.type;
-    div.appendChild(contentdiv);
-    count++;
-    finalArray.push({ ...dataItem });
+    const contentDivInner = document.createElement("div");
+    contentDivInner.textContent = dataItem.type;
+    div.appendChild(contentDivInner);
+
     // Create a span for the plus icon
     const plusIcon = document.createElement("span");
     plusIcon.innerHTML = '<i class="fa-solid fa-plus"></i>';
     plusIcon.classList.add("plus-icon");
     div.appendChild(plusIcon);
     plusIcon.addEventListener("click", () => {
-      const oject = { ...dataItem, id: finalArray.length + 1 };
-      finalArray.push(oject);
-      handlePlusIconClick(oject);
+      const newId = finalArray.length + 1;
+      const newObj = { ...dataItem, id: newId };
+      finalArray.push(newObj);
+      handlePlusIconClick(newObj);
     });
 
     // Append the main container div to the content div
     contentDiv.appendChild(div);
   });
-};
-
-const handlePlusIconClick = (dataItem) => {
-  newArray = [];
-  newArray.push({ ...dataItem });
-  createForm();
-};
-
-const updateNewArrayOrder = () => {
-  const updatedArray = [];
-  formContainer.childNodes.forEach((node) => {
-    const eleId = node.id.charAt(node.id.length - 1);
-    const eles = finalArray.filter((ele) => ele.id === +eleId);
-    if (eles && eles.length > 0) {
-      updatedArray.push({ ...eles[0] });
-    }
-  });
-  newArray = [...updatedArray];
-  finalArray = [...updatedArray];
 };
 
 const createForm = () => {
@@ -226,7 +203,7 @@ const createForm = () => {
             content.textContent = "Select an option";
             newOptionDiv.remove();
             deleteOptionDrop(item, newOption);
-            dropdownOptions.classList.toggle("dropdown-options-show");
+            // dropdownOptions.classList.toggle("dropdown-options-show");
           });
 
           newOptionDiv.classList.add("drop-content-label");
@@ -252,6 +229,25 @@ const createForm = () => {
     // Append outer container to form container
     formContainer.appendChild(outerDiv);
   });
+};
+
+const handlePlusIconClick = (dataItem) => {
+  newArray = [];
+  newArray.push({ ...dataItem });
+  createForm();
+};
+
+const updateNewArrayOrder = () => {
+  const updatedArray = [];
+  formContainer.childNodes.forEach((node) => {
+    const eleId = node.id.charAt(node.id.length - 1);
+    const eles = finalArray.filter((ele) => ele.id === +eleId);
+    if (eles && eles.length > 0) {
+      updatedArray.push({ ...eles[0] });
+    }
+  });
+  newArray = [...updatedArray];
+  finalArray = [...updatedArray];
 };
 
 const deleteSpecificData = (item) => {
@@ -284,5 +280,5 @@ saveBtn.addEventListener("click", () => {
 });
 
 // Call the createForm function to generate the form
-getJsonData();
+createComponent();
 createForm();
