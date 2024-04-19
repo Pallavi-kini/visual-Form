@@ -1,16 +1,14 @@
 import data from "./sampleData.json" assert { type: "json" };
-// console.log(data);
 const formData = data.formData;
-// console.log(formData);
-var newArray = [];
+let newArray = [];
 let finalArray = [];
 newArray = formData;
 let count = 1;
+
 const getJsonData = () => {
   const contentDiv = document.getElementById("formDesigner");
 
   formData.forEach((dataItem) => {
-    // Create the main container div
     const div = document.createElement("div");
     div.setAttribute("id", dataItem.id);
     div.setAttribute("data-type", dataItem.type);
@@ -24,19 +22,14 @@ const getJsonData = () => {
     contentdiv.textContent = dataItem.type;
     div.appendChild(contentdiv);
     count++;
-    finalArray.push(dataItem);
+    finalArray.push({ ...dataItem });
     // Create a span for the plus icon
     const plusIcon = document.createElement("span");
     plusIcon.innerHTML = '<i class="fa-solid fa-plus"></i>';
     plusIcon.classList.add("plus-icon");
     div.appendChild(plusIcon);
     plusIcon.addEventListener("click", () => {
-      const oject = {};
-      oject.id = finalArray.length + 1;
-      oject.label = dataItem.label;
-      oject.type = dataItem.type;
-      oject.placeholder = dataItem.placeholder;
-      oject.options = dataItem.options;
+      const oject = { ...dataItem, id: finalArray.length + 1 };
       finalArray.push(oject);
       handlePlusIconClick(oject);
     });
@@ -47,31 +40,29 @@ const getJsonData = () => {
 };
 
 const handlePlusIconClick = (dataItem) => {
-  // Your logic here
   newArray = [];
-  newArray.push(dataItem);
+  newArray.push({ ...dataItem });
   createForm();
 };
 
 const updateNewArrayOrder = () => {
   const updatedArray = [];
   formContainer.childNodes.forEach((node) => {
-    const eles = finalArray.filter(
-      (ele) => ele.id === +node.id.charAt(node.id.length - 1)
-    );
+    const eleId = node.id.charAt(node.id.length - 1);
+    const eles = finalArray.filter((ele) => ele.id === +eleId);
     if (eles && eles.length > 0) {
-      updatedArray.push(eles[0]);
+      updatedArray.push({ ...eles[0] });
     }
   });
-  newArray = updatedArray;
-  finalArray = updatedArray;
+  newArray = [...updatedArray];
+  finalArray = [...updatedArray];
 };
 
 const createForm = () => {
   const formContainer = document.getElementById("formContainer");
 
   //Create outer container for each form field
-  newArray.forEach((item) => {
+  newArray.forEach((item, index) => {
     const outerDiv = document.createElement("div");
     outerDiv.classList.add("form-field-container");
     outerDiv.setAttribute("draggable", "true");
@@ -122,11 +113,8 @@ const createForm = () => {
     });
 
     const deleteSpecificData = (item) => {
-      const indexToDelete = newArray.indexOf(item);
-      if (indexToDelete !== -1) {
-        newArray.splice(indexToDelete, 1);
-        finalArray.splice(indexToDelete, 1);
-      }
+      newArray = newArray.filter((ele) => ele.id !== item.id);
+      finalArray = finalArray.filter((ele) => ele.id !== item.id);
     };
 
     // Create inner container for label and delete icon
@@ -138,9 +126,12 @@ const createForm = () => {
     label.textContent = item.label;
 
     label.contentEditable = true;
-    // label.addEventListener("blur", () => {
-    //   editFields();
-    // });
+    label.addEventListener("input", () => {
+      const newItem = { ...item, label: label.textContent.trim() };
+      const index = newArray.findIndex((element) => element.id === item.id);
+      newArray[index] = { ...newItem };
+      finalArray[index] = { ...newItem };
+    });
 
     // Create delete icon
     const deleteIcon = document.createElement("span");
@@ -167,32 +158,58 @@ const createForm = () => {
 
       // Make placeholder editable on click
     } else if (item.type === "select") {
-      formField = document.createElement("select");
-      formField.setAttribute("name", item.label.toLowerCase());
+      formField = document.createElement("div");
+
+      const mainSmall = document.createElement("div");
+      const arrow = document.createElement("span");
+      const content = document.createElement("span");
+      content.textContent = "Select an option";
+      arrow.innerHTML = '<i class="fa-solid fa-angle-down"></i>';
+      arrow.classList.add("delete-icon");
+
+      mainSmall.addEventListener("click", () => {
+        dropdownOptions.classList.toggle("dropdown-options-show");
+      });
+
+      mainSmall.appendChild(content);
+      mainSmall.appendChild(arrow);
+      mainSmall.classList.add("drop-content");
+      formField.appendChild(mainSmall);
+
+      const dropdownOptions = document.createElement("div");
+      dropdownOptions.classList.add("dropdown-options");
 
       item.options.forEach((option) => {
-        const optionElement = document.createElement("option");
-        optionElement.textContent = option; // Display option name
-
-        formField.appendChild(optionElement);
-
-        const optionContainer = document.createElement("div");
-        optionContainer.classList.add("option-container");
-
-        const optionDelete = document.createElement("span");
-        optionDelete.innerHTML = '<i class="fa-solid fa-trash"></i>';
-        optionDelete.classList.add("delete-icon");
-        optionDelete.addEventListener("click", () => {
-          deleteOption(option, item);
+        const optionDiv = document.createElement("div");
+        const optionContenet = document.createElement("span");
+        optionContenet.textContent = option.name;
+        const optiondelete = document.createElement("span");
+        optiondelete.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
+        optiondelete.classList.add("delete-icon");
+        optiondelete.addEventListener("click", (event) => {
+          event.stopImmediatePropagation();
+          content.textContent = "Select an option";
+          optionDiv.remove();
+          deleteOptionDrop(item, option);
+          dropdownOptions.classList.toggle("dropdown-options-show");
         });
 
-        optionContainer.appendChild(optionDelete);
-
-        // Append delete icon next to option
-        optionElement.dataset.deleteIcon = optionDelete.outerHTML;
+        optionDiv.classList.add("drop-content-label");
+        optionDiv.appendChild(optionContenet);
+        optionDiv.appendChild(optiondelete);
+        optionDiv.addEventListener("click", (event) => {
+          event.stopImmediatePropagation();
+          dropdownOptions.classList.toggle("dropdown-options-show");
+          console.log("Selected option:", option);
+          content.textContent = option.name;
+        });
+        dropdownOptions.appendChild(optionDiv);
       });
+
+      formField.appendChild(dropdownOptions);
     }
     formField.classList.add("form-field-style");
+
     // Append form field to outer container
     outerDiv.appendChild(formField);
 
@@ -201,20 +218,20 @@ const createForm = () => {
   });
 };
 
-const deleteOption = (option, item) => {
-  // Find the index of the option in the options array
-  const indexToDelete = item.options.indexOf(option);
-  if (indexToDelete !== -1) {
-    // Remove the option from the options array
-    item.options.splice(indexToDelete, 1);
-    // Re-render the form
-    createForm();
-  }
-};
+function deleteOptionDrop(item, optionToDelete) {
+  const updatedOptions = item.options.filter(
+    (option) => option.name !== optionToDelete.name
+  );
+  const newItem = { ...item, options: updatedOptions };
+  const index = newArray.findIndex((element) => element.id === item.id);
+  newArray[index] = { ...newItem };
+  const finalIndex = finalArray.findIndex((element) => element.id === item.id);
+  finalArray[finalIndex] = { ...newItem };
+}
 
 const saveBtn = document.getElementById("saveBtn");
 saveBtn.addEventListener("click", () => {
-  console.log(JSON.stringify(newArray));
+  console.log(JSON.stringify(finalArray));
 });
 
 // Call the createForm function to generate the form

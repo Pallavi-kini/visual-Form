@@ -9,8 +9,12 @@
     {
       "id": 2,
       "type": "select",
-      "label": "selection",
-      "options": ["Sample Option", "Sample Option", "Sample Option"]
+      "label": "Selection",
+      "options": [
+        { "name": "Sample1 ", "value": 1 },
+        { "name": "Sample2 ", "value": 2 },
+        { "name": "Sample3 ", "value": 3 }
+      ]
     },
     {
       "id": 3,

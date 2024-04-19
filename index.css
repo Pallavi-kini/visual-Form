@@ -9,6 +9,7 @@
   /* background-color: red; */
   background-image: url("./bgimage.jpg");
   /* object-fit: cover; */
+  /* background-image: linear-gradient(to right, #5d52c7, #92428f); */
   background-repeat: no-repeat;
   overflow: hidden;
   background-size: cover;
@@ -36,15 +37,19 @@
   flex-direction: column;
   gap: 20px;
   border-radius: 2%;
-  /* background-image: url("./containerImg.jpg");
-  /* object-fit: cover; */
-  /* background-repeat: no-repeat;  */
-  background-color: rgb(241, 195, 241);
+  /* background-image: linear-gradient(to right, #5d52c7, #92428f); */
+  background-image: url("./cont1.jpg");
+  object-fit: cover;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  /* background-color: rgb(241, 195, 241); */
 }
 
 .plus-icon {
   font-weight: 800;
   font-size: 20px;
+  cursor: pointer;
 }
 
 .form-field {
@@ -70,6 +75,8 @@
   padding: 10px 0px;
   justify-content: space-between;
   width: 100%;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 /* Style for label */
@@ -98,9 +105,13 @@ select {
 .visual-form {
   border-radius: 2%;
   width: 70%;
-
-  background-color: rgb(241, 195, 241);
+  background-image: url("./cont1.jpg");
+  width: 100%;
+  /* background-color: rgb(241, 195, 241); */
   padding: 30px;
+  overflow: hidden;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .form-field-style {
@@ -109,17 +120,30 @@ select {
   outline: none;
   width: 100%;
   border-radius: 2%;
+  /* opacity: 1; */
+  background-color: #a7a0a029;
 }
 
-.container {
+.inside-container {
   display: flex;
 }
 
 #header {
-  background-color: #f1f1f1;
+  background-color: #f599aa;
   padding: 20px;
   display: flex;
   justify-content: space-between;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+#saveBtn {
+  padding: 2;
+  padding: 2px 10px;
+  border: none;
+  border-radius: 13%;
+  font-size: 18px;
+  background-color: #f0f3e4;
 }
 
 .option-container {
@@ -144,4 +168,87 @@ select {
   width: 20px; /* Adjust the size of the image */
   height: 20px; /* Adjust the size of the image */
   margin-right: 5px; /* Adjust the spacing between image and text */
+}
+
+.outer-form-container {
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+  width: 100%;
+  padding: 30px;
+}
+
+/* .custom-select {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px;
+  width: 200px; 
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+} */
+
+/* .dropdown-toggle {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+} */
+
+.dropdown-options {
+  display: none;
+  /* position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  z-index: 1; */
+}
+
+.dropdown-options-show {
+  display: block;
+  /* position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  z-index: 1; */
+}
+
+.dropdown-option {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.dropdown-option:hover {
+  background-color: #f0f0f0;
+}
+
+.delete-icon {
+  cursor: pointer;
+}
+
+.drop-content {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px;
+}
+
+.drop-content-label {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px;
+}
+
+.drop-content-label:hover {
+  background-color: blue;
+  color: white;
 }
