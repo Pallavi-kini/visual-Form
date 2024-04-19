@@ -75,7 +75,6 @@ const createForm = () => {
     outerDiv.addEventListener("dragover", (e) => {
       e.preventDefault(); // Allow drop
     });
-
     outerDiv.addEventListener("drop", (e) => {
       e.preventDefault();
       const startIndex = e.dataTransfer.getData("text/plain");
@@ -111,11 +110,6 @@ const createForm = () => {
         updateNewArrayOrder();
       }
     });
-
-    const deleteSpecificData = (item) => {
-      newArray = newArray.filter((ele) => ele.id !== item.id);
-      finalArray = finalArray.filter((ele) => ele.id !== item.id);
-    };
 
     // Create inner container for label and delete icon
     const innerDiv = document.createElement("div");
@@ -216,6 +210,11 @@ const createForm = () => {
     // Append outer container to form container
     formContainer.appendChild(outerDiv);
   });
+};
+
+const deleteSpecificData = (item) => {
+  newArray = newArray.filter((ele) => ele.id !== item.id);
+  finalArray = finalArray.filter((ele) => ele.id !== item.id);
 };
 
 function deleteOptionDrop(item, optionToDelete) {
