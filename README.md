@@ -31,3 +31,4 @@ To install AwesomeApp, follow these steps:
 1. Clone the repository:
 2. Navigate to the project directory:
 3. Open your web browser and navigate to http://localhost:3000 to access the application.
+4. The application has been deployed on Netlify and can be accessed via the following link: https://main--serene-dodol-29d997.netlify.app/
