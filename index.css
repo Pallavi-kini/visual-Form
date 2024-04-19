@@ -6,12 +6,12 @@
 }
 
 .container {
-  background-image: url("./Assets//bgimage.jpg");
+  background: linear-gradient(135deg, #1b8af1, #b58ded);
   background-repeat: no-repeat;
   overflow: hidden;
   background-size: cover;
   width: 100%;
-  height: 100%;
+  min-height: 100vh;
 }
 
 .form-content {
@@ -24,7 +24,6 @@
 .component-container {
   padding: 30px;
   width: 30%;
-  min-height: 100vh;
 }
 
 .outer-content {
@@ -33,11 +32,13 @@
   flex-direction: column;
   gap: 20px;
   border-radius: 2%;
-  background-image: url("./Assets/content.jpg");
+  background-image: url("./Assets/blue-background.jpg");
   object-fit: cover;
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .plus-icon {
@@ -52,12 +53,6 @@
   display: flex;
 }
 
-.inner-container {
-  display: flex;
-  justify-content: space-between;
-  width: 300px;
-}
-
 .form-field-container {
   margin-bottom: 20px;
 }
@@ -68,39 +63,23 @@
   padding: 10px 0px;
   justify-content: space-between;
   width: 100%;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-label {
-  margin-right: 10px;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-textarea,
-select {
-  width: 100%;
-  padding: 5px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
 }
 
 .visual-form {
   border-radius: 2%;
   width: 70%;
-  background-image: url("./Assets/content.jpg");
+  background-image: url("./Assets/blue-background.jpg");
   width: 100%;
   padding: 30px;
   overflow: hidden;
   background-size: cover;
   background-repeat: no-repeat;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .form-field-style {
-  padding: 10px;
+  padding: 13px;
   border: none;
   outline: none;
   width: 100%;
@@ -114,22 +93,23 @@ select {
   display: flex;
 }
 
-#header {
-  background-color: #f599aa;
-  padding: 20px;
+.header {
+  padding: 10px;
   display: flex;
-  justify-content: space-between;
-  font-size: 20px;
+  font-size: 32px;
   font-weight: 600;
+  color: white;
+  align-items: center;
+  justify-content: center;
 }
 
 #saveBtn {
-  padding: 2;
-  padding: 2px 10px;
+  padding: 12px 25px;
   border: none;
   border-radius: 13%;
   font-size: 18px;
   background-color: #f0f3e4;
+  font-weight: 500;
 }
 
 .option-container {
@@ -138,10 +118,17 @@ select {
 }
 
 .outer-form-container {
-  display: flex;
+  gap: 20px;
   justify-content: center;
   width: 100%;
   padding: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-class {
+  display: flex;
+  justify-content: end;
 }
 
 .dropdown-options {
