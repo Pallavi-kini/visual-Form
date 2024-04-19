@@ -6,7 +6,7 @@
 }
 
 .container {
-  background-image: url("./bgimage.jpg");
+  background-image: url("./Assets//bgimage.jpg");
   background-repeat: no-repeat;
   overflow: hidden;
   background-size: cover;
@@ -33,7 +33,7 @@
   flex-direction: column;
   gap: 20px;
   border-radius: 2%;
-  background-image: url("./cont1.jpg");
+  background-image: url("./Assets/content.jpg");
   object-fit: cover;
   background-repeat: no-repeat;
   background-size: cover;
@@ -91,7 +91,7 @@ select {
 .visual-form {
   border-radius: 2%;
   width: 70%;
-  background-image: url("./cont1.jpg");
+  background-image: url("./Assets/content.jpg");
   width: 100%;
   padding: 30px;
   overflow: hidden;
@@ -105,7 +105,7 @@ select {
   outline: none;
   width: 100%;
   border-radius: 2%;
-  background-color: #a7a0a029;
+  background-color: #5c414136;
   font-size: 15px;
   font-weight: 500;
 }

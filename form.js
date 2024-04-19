@@ -173,7 +173,9 @@ const createForm = () => {
       const dropdownOptions = document.createElement("div");
       dropdownOptions.classList.add("dropdown-options");
 
-      item.options.forEach((option) => {
+      const optionsCopy = item.options.map((obj) => ({ ...obj }));
+
+      optionsCopy.forEach((option) => {
         const optionDiv = document.createElement("div");
         const optionContenet = document.createElement("span");
         optionContenet.textContent = option.name;
@@ -194,11 +196,51 @@ const createForm = () => {
         optionDiv.addEventListener("click", (event) => {
           event.stopImmediatePropagation();
           dropdownOptions.classList.toggle("dropdown-options-show");
-          console.log("Selected option:", option);
           content.textContent = option.name;
         });
         dropdownOptions.appendChild(optionDiv);
       });
+
+      // Add an "Add New" option
+      const addNewOptionDiv = document.createElement("div");
+      addNewOptionDiv.classList.add("drop-content-label");
+      const addNewOptionSpan = document.createElement("span");
+      addNewOptionSpan.textContent = "Add New Option";
+      addNewOptionDiv.appendChild(addNewOptionSpan);
+      addNewOptionDiv.addEventListener("click", (event) => {
+        event.stopImmediatePropagation();
+        const newOptionName = prompt("Enter the new option:");
+        if (newOptionName) {
+          const newOption = { name: newOptionName }; // Create a new option object
+          optionsCopy.push(newOption); // Add the new option to the options array
+          const newOptionDiv = document.createElement("div");
+          const newOptionContent = document.createElement("span");
+          newOptionContent.textContent = newOption.name;
+          const newOptionDelete = document.createElement("span");
+          newOptionDelete.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
+          newOptionDelete.classList.add("delete-icon");
+
+          addNewOptionDrop(item, optionsCopy); // Add the new option to the item object
+          newOptionDelete.addEventListener("click", (event) => {
+            event.stopImmediatePropagation();
+            content.textContent = "Select an option";
+            newOptionDiv.remove();
+            deleteOptionDrop(item, newOption);
+            dropdownOptions.classList.toggle("dropdown-options-show");
+          });
+
+          newOptionDiv.classList.add("drop-content-label");
+          newOptionDiv.appendChild(newOptionContent);
+          newOptionDiv.appendChild(newOptionDelete);
+          newOptionDiv.addEventListener("click", (event) => {
+            event.stopImmediatePropagation();
+            dropdownOptions.classList.toggle("dropdown-options-show");
+            content.textContent = newOption.name;
+          });
+          dropdownOptions.insertBefore(newOptionDiv, addNewOptionDiv); // Insert new option before the "Add New" option
+        }
+      });
+      dropdownOptions.appendChild(addNewOptionDiv);
 
       formField.appendChild(dropdownOptions);
     }
@@ -228,9 +270,17 @@ function deleteOptionDrop(item, optionToDelete) {
   finalArray[finalIndex] = { ...newItem };
 }
 
+function addNewOptionDrop(item, optionsCopy) {
+  const newItem = { ...item, options: optionsCopy };
+  const index = newArray.findIndex((element) => element.id === item.id);
+  newArray[index] = { ...newItem };
+  const finalIndex = finalArray.findIndex((element) => element.id === item.id);
+  finalArray[finalIndex] = { ...newItem };
+}
+
 const saveBtn = document.getElementById("saveBtn");
 saveBtn.addEventListener("click", () => {
-  console.log(JSON.stringify(finalArray));
+  console.log(finalArray);
 });
 
 // Call the createForm function to generate the form
