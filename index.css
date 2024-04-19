@@ -6,10 +6,7 @@
 }
 
 .container {
-  /* background-color: red; */
   background-image: url("./bgimage.jpg");
-  /* object-fit: cover; */
-  /* background-image: linear-gradient(to right, #5d52c7, #92428f); */
   background-repeat: no-repeat;
   overflow: hidden;
   background-size: cover;
@@ -27,7 +24,6 @@
 .component-container {
   padding: 30px;
   width: 30%;
-  /* background-color: rgb(172, 85, 172); */
   min-height: 100vh;
 }
 
@@ -37,13 +33,11 @@
   flex-direction: column;
   gap: 20px;
   border-radius: 2%;
-  /* background-image: linear-gradient(to right, #5d52c7, #92428f); */
   background-image: url("./cont1.jpg");
   object-fit: cover;
   background-repeat: no-repeat;
   background-size: cover;
   width: 100%;
-  /* background-color: rgb(241, 195, 241); */
 }
 
 .plus-icon {
@@ -68,7 +62,6 @@
   margin-bottom: 20px;
 }
 
-/* Style for inner container */
 .inner-container {
   display: flex;
   align-items: center;
@@ -79,17 +72,10 @@
   font-weight: 600;
 }
 
-/* Style for label */
 label {
   margin-right: 10px;
 }
 
-/* Style for delete icon */
-.delete-icon {
-  cursor: pointer; /* Change cursor to pointer on hover */
-}
-
-/* Style for form fields */
 input[type="text"],
 input[type="email"],
 input[type="tel"],
@@ -107,7 +93,6 @@ select {
   width: 70%;
   background-image: url("./cont1.jpg");
   width: 100%;
-  /* background-color: rgb(241, 195, 241); */
   padding: 30px;
   overflow: hidden;
   background-size: cover;
@@ -120,8 +105,9 @@ select {
   outline: none;
   width: 100%;
   border-radius: 2%;
-  /* opacity: 1; */
   background-color: #a7a0a029;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .inside-container {
@@ -151,76 +137,19 @@ select {
   justify-content: space-between;
 }
 
-.option-container span {
-  margin-left: 5px; /* Adjust margin as needed */
-}
-
-.custom-select {
-  position: relative;
-  display: inline-block;
-}
-
-.custom-select select {
-  display: none;
-}
-
-.option-image {
-  width: 20px; /* Adjust the size of the image */
-  height: 20px; /* Adjust the size of the image */
-  margin-right: 5px; /* Adjust the spacing between image and text */
-}
-
 .outer-form-container {
   display: flex;
   justify-content: center;
-  /* align-items: center; */
   width: 100%;
   padding: 30px;
 }
 
-/* .custom-select {
-  position: relative;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 5px;
-  width: 200px; 
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-} */
-
-/* .dropdown-toggle {
-  cursor: pointer;
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-} */
-
 .dropdown-options {
   display: none;
-  /* position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-  z-index: 1; */
 }
 
 .dropdown-options-show {
   display: block;
-  /* position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-  z-index: 1; */
 }
 
 .dropdown-option {
@@ -251,4 +180,17 @@ select {
 .drop-content-label:hover {
   background-color: blue;
   color: white;
+}
+
+/* Mobile View */
+
+@media only screen and (max-width: 630px) {
+  .inside-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .component-container {
+    width: 100%;
+    min-height: unset;
+  }
 }
