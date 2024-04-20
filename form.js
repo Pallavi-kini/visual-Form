@@ -5,34 +5,52 @@ let finalArray = [];
 newArray = formData;
 let count = 1;
 
-const createComponent = () => {
+const getJsonData = () => {
   const contentDiv = document.getElementById("formDesigner");
 
   formData.forEach((dataItem) => {
     const div = document.createElement("div");
-    div.setAttribute("id", dataItem.id);
     div.classList.add("form-content");
 
     // Create a div for the content
-    const contentDivInner = document.createElement("div");
-    contentDivInner.textContent = dataItem.type;
-    div.appendChild(contentDivInner);
-
+    const contentdiv = document.createElement("div");
+    contentdiv.textContent = dataItem.type;
+    div.appendChild(contentdiv);
+    count++;
+    finalArray.push({ ...dataItem });
     // Create a span for the plus icon
     const plusIcon = document.createElement("span");
     plusIcon.innerHTML = '<i class="fa-solid fa-plus"></i>';
     plusIcon.classList.add("plus-icon");
     div.appendChild(plusIcon);
     plusIcon.addEventListener("click", () => {
-      const newId = finalArray.length + 1;
-      const newObj = { ...dataItem, id: newId };
-      finalArray.push(newObj);
-      handlePlusIconClick(newObj);
+      const oject = { ...dataItem, id: finalArray.length + 1 };
+      finalArray.push(oject);
+      handlePlusIconClick(oject);
     });
 
     // Append the main container div to the content div
     contentDiv.appendChild(div);
   });
+};
+
+const handlePlusIconClick = (dataItem) => {
+  newArray = [];
+  newArray.push({ ...dataItem });
+  createForm();
+};
+
+const updateNewArrayOrder = () => {
+  const updatedArray = [];
+  formContainer.childNodes.forEach((node) => {
+    const eleId = node.id.charAt(node.id.length - 1);
+    const eles = finalArray.filter((ele) => ele.id === +eleId);
+    if (eles && eles.length > 0) {
+      updatedArray.push({ ...eles[0] });
+    }
+  });
+  newArray = [...updatedArray];
+  finalArray = [...updatedArray];
 };
 
 const createForm = () => {
@@ -45,48 +63,8 @@ const createForm = () => {
     outerDiv.setAttribute("draggable", "true");
     outerDiv.setAttribute("id", "main" + item.id);
 
-    outerDiv.addEventListener("dragstart", (event) => {
-      event.dataTransfer.setData("text/plain", "main" + item.id);
-    });
-
-    outerDiv.addEventListener("dragover", (e) => {
-      e.preventDefault(); // Allow drop
-    });
-    outerDiv.addEventListener("drop", (e) => {
-      e.preventDefault();
-      const startIndex = e.dataTransfer.getData("text/plain");
-      const endIndex = e.currentTarget.id;
-      if (startIndex !== endIndex) {
-        // Reorder the elements in the DOM
-        const draggedElement = document.getElementById(startIndex);
-        const dropZoneElement = document.getElementById(endIndex);
-
-        // Get the index of the drop zone element in the list of form fields
-        const dropZoneIndex = Array.from(formContainer.children).indexOf(
-          dropZoneElement
-        );
-
-        // Check if the dragged element should be inserted before or after the drop zone element
-        if (draggedElement.offsetTop > dropZoneElement.offsetTop) {
-          // Dragging upwards
-          formContainer.insertBefore(draggedElement, dropZoneElement);
-        } else if (draggedElement.offsetTop < dropZoneElement.offsetTop) {
-          // Dragging downwards
-          if (formContainer.children[dropZoneIndex + 1]) {
-            // If there is a next sibling, insert before it
-            formContainer.insertBefore(
-              draggedElement,
-              formContainer.children[dropZoneIndex + 1]
-            );
-          } else {
-            // If there is no next sibling, append to the end
-            formContainer.appendChild(draggedElement);
-          }
-        }
-        // Update the newArray with the new order
-        updateNewArrayOrder();
-      }
-    });
+    // drag drop function
+    dragDropElement(outerDiv, formContainer, item);
 
     // Create inner container for label and delete icon
     const innerDiv = document.createElement("div");
@@ -131,96 +109,109 @@ const createForm = () => {
     } else if (item.type === "select") {
       formField = document.createElement("div");
 
-      const mainSmall = document.createElement("div");
-      const arrow = document.createElement("span");
-      const content = document.createElement("span");
-      content.textContent = "Select an option";
-      arrow.innerHTML = '<i class="fa-solid fa-angle-down"></i>';
-      arrow.classList.add("delete-icon");
-
-      mainSmall.addEventListener("click", () => {
+      const mainSmall = createDivElement("drop-content", () => {
         dropdownOptions.classList.toggle("dropdown-options-show");
       });
 
+      const content = createSpanElement("Select an option");
+      const arrow = createIconElement("fa-solid fa-angle-down delete-icon");
+
       mainSmall.appendChild(content);
       mainSmall.appendChild(arrow);
-      mainSmall.classList.add("drop-content");
       formField.appendChild(mainSmall);
 
       const dropdownOptions = document.createElement("div");
       dropdownOptions.classList.add("dropdown-options");
 
-      const optionsCopy = item.options.map((obj) => ({ ...obj }));
-
-      optionsCopy.forEach((option) => {
-        const optionDiv = document.createElement("div");
-        const optionContenet = document.createElement("span");
-        optionContenet.textContent = option.name;
-        const optiondelete = document.createElement("span");
-        optiondelete.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
-        optiondelete.classList.add("delete-icon");
-        optiondelete.addEventListener("click", (event) => {
-          event.stopImmediatePropagation();
-          content.textContent = "Select an option";
-          optionDiv.remove();
-          deleteOptionDrop(item, option);
-          dropdownOptions.classList.toggle("dropdown-options-show");
-        });
-
-        optionDiv.classList.add("drop-content-label");
-        optionDiv.appendChild(optionContenet);
-        optionDiv.appendChild(optiondelete);
-        optionDiv.addEventListener("click", (event) => {
-          event.stopImmediatePropagation();
-          dropdownOptions.classList.toggle("dropdown-options-show");
-          content.textContent = option.name;
-        });
+      item.options.forEach((option) => {
+        const optionDiv = createOptionDiv(
+          option,
+          item,
+          dropdownOptions,
+          content
+        );
         dropdownOptions.appendChild(optionDiv);
       });
 
-      // Add an "Add New" option
-      const addNewOptionDiv = document.createElement("div");
-      addNewOptionDiv.classList.add("drop-content-label");
-      const addNewOptionSpan = document.createElement("span");
-      addNewOptionSpan.textContent = "Add New Option";
-      addNewOptionDiv.appendChild(addNewOptionSpan);
-      addNewOptionDiv.addEventListener("click", (event) => {
-        event.stopImmediatePropagation();
-        const newOptionName = prompt("Enter the new option:");
-        if (newOptionName) {
-          const newOption = { name: newOptionName }; // Create a new option object
-          optionsCopy.push(newOption); // Add the new option to the options array
-          const newOptionDiv = document.createElement("div");
-          const newOptionContent = document.createElement("span");
-          newOptionContent.textContent = newOption.name;
-          const newOptionDelete = document.createElement("span");
-          newOptionDelete.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
-          newOptionDelete.classList.add("delete-icon");
-
-          addNewOptionDrop(item, optionsCopy); // Add the new option to the item object
-          newOptionDelete.addEventListener("click", (event) => {
-            event.stopImmediatePropagation();
-            content.textContent = "Select an option";
-            newOptionDiv.remove();
-            deleteOptionDrop(item, newOption);
-            // dropdownOptions.classList.toggle("dropdown-options-show");
-          });
-
-          newOptionDiv.classList.add("drop-content-label");
-          newOptionDiv.appendChild(newOptionContent);
-          newOptionDiv.appendChild(newOptionDelete);
-          newOptionDiv.addEventListener("click", (event) => {
-            event.stopImmediatePropagation();
-            dropdownOptions.classList.toggle("dropdown-options-show");
-            content.textContent = newOption.name;
-          });
-          dropdownOptions.insertBefore(newOptionDiv, addNewOptionDiv); // Insert new option before the "Add New" option
-        }
-      });
+      const addNewOptionDiv = createAddNewOptionDiv(dropdownOptions, content);
       dropdownOptions.appendChild(addNewOptionDiv);
 
       formField.appendChild(dropdownOptions);
     }
+
+    function createDivElement(className, onClickHandler) {
+      const div = document.createElement("div");
+      div.classList.add(className);
+      div.addEventListener("click", onClickHandler);
+      return div;
+    }
+
+    function createSpanElement(textContent) {
+      const span = document.createElement("span");
+      span.textContent = textContent;
+      return span;
+    }
+
+    function createIconElement(className) {
+      const icon = document.createElement("span");
+      icon.innerHTML = `<i class="${className}"></i>`;
+      return icon;
+    }
+
+    function createOptionDiv(option, item, dropdownOptions, content) {
+      const optionDiv = document.createElement("div");
+      const optionContent = createSpanElement(option.name);
+      const optionDelete = createIconElement(
+        "fa-regular fa-trash-can delete-icon"
+      );
+
+      optionDiv.classList.add("drop-content-label");
+      optionDiv.appendChild(optionContent);
+      optionDiv.appendChild(optionDelete);
+
+      optionDelete.addEventListener("click", (event) => {
+        event.stopImmediatePropagation();
+        content.textContent = "Select an option";
+        optionDiv.remove();
+        deleteOptionDrop(item, option);
+        dropdownOptions.classList.toggle("dropdown-options-show");
+      });
+
+      optionDiv.addEventListener("click", (event) => {
+        event.stopImmediatePropagation();
+        dropdownOptions.classList.toggle("dropdown-options-show");
+        console.log("Selected option:", option);
+        content.textContent = option.name;
+      });
+
+      addNewOptionDrop(item, [...item.options]);
+
+      return optionDiv;
+    }
+
+    function createAddNewOptionDiv(dropdownOptions, content) {
+      const addNewOptionDiv = createDivElement(
+        "drop-content-label",
+        (event) => {
+          event.stopImmediatePropagation();
+          const newOptionName = prompt("Enter the new option:");
+          if (newOptionName) {
+            const newOption = { name: newOptionName };
+            const newOptionDiv = createOptionDiv(
+              newOption,
+              item,
+              dropdownOptions,
+              content
+            );
+            dropdownOptions.insertBefore(newOptionDiv, addNewOptionDiv);
+          }
+        }
+      );
+      const addNewOptionSpan = createSpanElement("Add New Option");
+      addNewOptionDiv.appendChild(addNewOptionSpan);
+      return addNewOptionDiv;
+    }
+
     formField.classList.add("form-field-style");
 
     // Append form field to outer container
@@ -231,23 +222,37 @@ const createForm = () => {
   });
 };
 
-const handlePlusIconClick = (dataItem) => {
-  newArray = [];
-  newArray.push({ ...dataItem });
-  createForm();
-};
+const dragDropElement = (outerDiv, formContainer, item) => {
+  outerDiv.addEventListener("dragstart", (event) => {
+    event.dataTransfer.setData("text/plain", "main" + item.id);
+  });
 
-const updateNewArrayOrder = () => {
-  const updatedArray = [];
-  formContainer.childNodes.forEach((node) => {
-    const eleId = node.id.charAt(node.id.length - 1);
-    const eles = finalArray.filter((ele) => ele.id === +eleId);
-    if (eles && eles.length > 0) {
-      updatedArray.push({ ...eles[0] });
+  outerDiv.addEventListener("dragover", (e) => {
+    e.preventDefault(); // Allow drop
+  });
+
+  outerDiv.addEventListener("drop", (e) => {
+    e.preventDefault();
+    const startIndex = e.dataTransfer.getData("text/plain");
+    const endIndex = e.currentTarget.id;
+    if (startIndex !== endIndex) {
+      const draggedElement = document.getElementById(startIndex);
+      const dropZoneElement = document.getElementById(endIndex);
+      const dropZoneIndex = Array.from(formContainer.children).indexOf(
+        dropZoneElement
+      );
+
+      if (draggedElement.offsetTop > dropZoneElement.offsetTop) {
+        formContainer.insertBefore(draggedElement, dropZoneElement);
+      } else if (draggedElement.offsetTop < dropZoneElement.offsetTop) {
+        formContainer.insertBefore(
+          draggedElement,
+          formContainer.children[dropZoneIndex + 1] || null
+        );
+      }
+      updateNewArrayOrder();
     }
   });
-  newArray = [...updatedArray];
-  finalArray = [...updatedArray];
 };
 
 const deleteSpecificData = (item) => {
@@ -280,5 +285,5 @@ saveBtn.addEventListener("click", () => {
 });
 
 // Call the createForm function to generate the form
-createComponent();
+getJsonData();
 createForm();
